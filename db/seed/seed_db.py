@@ -2,11 +2,15 @@ import json
 import pandas
 import os
 
+usersJsonFN = 'app/seed_data/users.json'
+skillsJsonFN = 'app/seed_data/skills.json'
+hackersJsonFN = 'app/seed_data/hackers.json'
+
 usersCSVFN = 'app/seed_data/users.csv'
 skillsCSVFN = 'app/seed_data/skills.csv'
 hackersCSVFN = 'app/seed_data/hackers.csv'
 
-fileNames = [usersCSVFN, skillsCSVFN, hackersCSVFN]
+fileNames = [usersJsonFN, skillsJsonFN, hackersJsonFN, usersCSVFN, skillsCSVFN, hackersCSVFN]
 
 for fn in fileNames:
 	os.makedirs(os.path.dirname(fn), exist_ok=True)
@@ -49,10 +53,23 @@ with open('app/HTN_2023_BE_Challenge_Data.json') as f:
 	
 	print("PARSED RAW JSON DATA")
 
+	jsonStrToJsonFileMapping = [
+    	[users, usersJsonFN],
+        [hackers, hackersJsonFN],
+        [hackerSkills, skillsJsonFN],
+    ]
+
+	for jsonToJsonFile in jsonStrToJsonFileMapping:
+		with open(file=jsonToJsonFile[1], mode='w') as fd:
+			json.dump(jsonToJsonFile[0], fd)
+
+    
+	print("DUMPED PARSED JSON TO FILES")
+
 	jsonCsvMapping = [
-		[users, usersCSVFN],
-		[hackers, hackersCSVFN],
-		[hackerSkills, skillsCSVFN],
+		[usersJsonFN, usersCSVFN],
+		[hackersJsonFN, hackersCSVFN],
+		[skillsJsonFN, skillsCSVFN],
 	]
 
 	for jsonToCsv in jsonCsvMapping:

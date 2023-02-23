@@ -13,13 +13,14 @@ services:
     ports:
       - '3306:3306'
     environment:
-      - MYSQL_ROOT_PASSWORD=mauFJcuf5dhRMQrjj
+      - MYSQL_ROOT_PASSWORD=password1234
     volumes:
       - db:/var/lib/mysql # local volume to persist db
       - seed_db:/var/lib/mysql-files/ # shared volume exposing dependent csv files for db initialization
       - ./db/seed_data/init.sql:/docker-entrypoint-initdb.d/init.sql  # initialize db
     depends_on:
-      - seed_db
+      seed_db:
+        condition: service_completed_successfully
   seed_db:
     build: ./db/seed
     volumes: 
