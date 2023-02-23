@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=mauFJcuf5dhRMQrjj
+    volumes:
+      - db:/var/lib/mysql # local volume to persist db
+      - seed_db:/var/lib/mysql-files/ # shared volume exposing dependent csv files for db initialization
+      - ./db/seed_data/init.sql:/docker-entrypoint-initdb.d/init.sql  # initialize db
+    depends_on:
+      - seed_db
+  seed_db:
+    build: ./db/seed
+    volumes: 
+      - seed_db:/app/seed_data  # shared volume exposing dependent csv files for db initialization
+volumes:
+  db:
+    driver: local
+  seed_db:
+    driver: local

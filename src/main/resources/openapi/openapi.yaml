@@ -1,0 +1,175 @@
+openapi: 3.0.2
+info:
+  title: Hack The North Backend Challenge API Spec
+  version: 1.0.0
+
+tags:
+  - name: Hackers
+
+paths:
+  /hackers:
+    get:
+      tags:
+        - Hackers
+      responses:
+        '200':
+          $ref: "#/components/responses/GetHackers"
+  /hackers/{hackerUUID}:
+    get:
+      tags:
+        - Hackers
+      parameters:
+        - $ref: "#/components/parameters/HackerUUID"
+      responses:
+        '200':
+          $ref: '#/components/responses/GetHacker'
+    patch:
+      tags:
+        - Hackers
+      parameters:
+        - $ref: "#/components/parameters/HackerUUID"
+      requestBody:
+        $ref: "#/components/requestBodies/PatchHacker"
+      responses:
+        '200':
+          $ref: "#/components/responses/GetHacker"
+        '400':
+          $ref: "#/components/responses/FormErrors"
+  
+  /hackers/skills:
+    get:
+      tags:
+        - Hackers
+      parameters:
+        - $ref: "#/components/parameters/MinSkillFrequency"
+        - $ref: "#/components/parameters/MaxSkillFrequency"
+      responses:
+        '200':
+          $ref: "#/components/responses/GetHackerSkills"
+
+components:
+  parameters:
+    HackerUUID:
+      in: path
+      name: hackerUUID
+      schema:
+        type: integer
+      required: true
+    
+    MinSkillFrequency:
+      in: query
+      name: min-frequency
+      schema:
+        type: integer
+        default: 0
+
+    MaxSkillFrequency:
+      in: query
+      name: max-frequency
+      schema:
+        type: integer
+        default: 2147483647
+
+  requestBodies:
+    PatchHacker:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Hacker'
+
+  responses:
+    GetHackers:
+      description: List of hackers
+      content:
+        application/json:
+          schema:
+            title: GetHackersResponse
+            type: object
+            properties:
+              hackers:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Hacker"
+
+    FormErrors:
+      description: List of form errors
+      content:
+          application/json:
+              schema:
+                $ref: "#/components/schemas/FormErrors"
+
+
+    GetHacker:
+      description: Hacker information
+      content:
+        application/json:
+          schema:
+            title: GetHackerResponse
+            type: object
+            properties:
+              hacker: 
+                $ref: "#/components/schemas/Hacker"
+
+    GetHackerSkills:
+      description: List of skills
+      content:
+        application/json:
+          schema:
+            title: GetHackerSkillsResponse
+            type: object
+            properties:
+              skills:
+                type: array
+                items: 
+                  $ref: "#/components/schemas/HackerSkillFrequency"
+
+
+  schemas:
+  ### DTOs
+    Hacker:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        skills:
+          type: array
+          items: 
+            $ref: "#/components/schemas/HackerSkill"
+    HackerSkill:
+      type: object
+      properties:
+        skill:
+          $ref: "#/components/schemas/HackerSkillType"
+        ratingTen:
+          type: number
+
+    HackerSkillFrequency:
+      type: object
+      properties:
+        skill: 
+          $ref: "#/components/schemas/HackerSkillType"
+        frequency:
+          type: number
+
+    FormErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/FieldError"
+
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+
+  ### Enums
+    HackerSkillType:
+      title: HackerSkillType
+      type: string
