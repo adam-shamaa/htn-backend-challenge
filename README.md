@@ -35,7 +35,7 @@ Databases:
 
 Note: To stop & clean up all volumes, networks and images, use `docker-compose down -v --rmi all`
 
-## Developement
+## Development
 
 #### API Specifications and Contract
 This project utilizes OpenAPI 3.0 to define and generate a contract that the backend API conforms to. Generated artifacts include {Controller Interfaces, DTO Models} which are built locally during the build lifecycle.
