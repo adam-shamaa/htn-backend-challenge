@@ -2,7 +2,7 @@
 
 ## Table of Contents
 1. [Challenge Reference](#Challenge-Reference)
-2. [Languages, Tools & Frameworks](#Languages,-Tools-&-Frameworks)
+2. [Languages, Tools & Frameworks](#Languages,-Tools,-Frameworks-&-Databases)
 3. [Getting Started](#Getting-Started)
 4. [Development](#Development)
 5. [Directory Structure](#Directory-Structure)
@@ -35,7 +35,7 @@ Databases:
 
 Note: To stop & clean up all volumes, networks and images, use `docker-compose down -v --rmi all`
 
-### Developement
+## Developement
 
 #### API Specifications and Contract
 This project utilizes OpenAPI 3.0 to define and generate a contract that the backend API conforms to. Generated artifacts include {Controller Interfaces, DTO Models} which are built locally during the build lifecycle.
@@ -52,7 +52,7 @@ There are three separate db tables:
 - Hacker table
 - HackerSkill table
 
-![Database Architecture](https://user-images.githubusercontent.com/61364811/220806332-6852859d-c0fd-43d3-9894-bf49b1c786e5.png)
+![Database Architecture](https://user-images.githubusercontent.com/61364811/221444542-58eba48d-602f-4a06-b990-b22244fe38b2.png)
 
 The user and hacker tables are seperated in order to allow generalization with different roles such as staff, volunteers, judges, sponsors who may use the same backend but have different views. With this architecture, common data across all roles exist in the user table while unique attributes live in their own role tables.
 
